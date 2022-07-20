@@ -1,25 +1,56 @@
 ﻿Imports System.IO
 Imports System.Data.OleDb
 Imports Microsoft.VisualBasic
-'Imports Microsoft.Office.Interop.Excel
-'Imports System.Data.DataTable
-'Imports Microsoft.Office.Interop
+Imports System.Data.SqlClient
 
 Public Class Form1
+    Dim Conn As SqlConnection
+    Dim Da As SqlDataAdapter
+    Dim Ds As DataSet
+    Dim MyDB As String
 
-    Dim fullPath As String
+    Sub ConnectionDB()
+        MyDB = "Data Source = 192.168.1.3; initial catalog=WPC;User ID=sa;Password=Msmskmykmsny7741;Integrated Security=False;Trusted_Connection=False;"
+        Conn = New SqlConnection(MyDB)
+
+        If Conn.State = ConnectionState.Closed Then
+            Conn.Open()
+            MsgBox("DB Connected")
+        End If
+    End Sub
+
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AssignValidation(NenDoTxtBx, ValidationType.Only_Numbers)
+        Call ConnectionDB()
 
+        Da = New SqlDataAdapter("Select * from T_AMTenpoArea", Conn)
+        Ds = New DataSet
+
+        Ds.Clear()
+        Da.Fill(Ds, "T_AMTenpoArea")
+        'DataGridView1.DataSource = Ds.Tables("T_AMTenpoArea")
+
+        '番号のみのテキストボックスの設定
+        AssignValidation(NenDoTxtBx, ValidationType.Only_Numbers)
+        AssignValidation(IryouUriTxtBx, ValidationType.Only_Numbers)
+        AssignValidation(JukyoUriTxtBx, ValidationType.Only_Numbers)
+        AssignValidation(ShokuUriTxtBx, ValidationType.Only_Numbers)
+        AssignValidation(HibbupUriTxtBx, ValidationType.Only_Numbers)
+
+        '最大桁数の設定
         NenDoTxtBx.MaxLength = 4
+        IryouUriTxtBx.MaxLength = 14
+        JukyoUriTxtBx.MaxLength = 14
+        ShokuUriTxtBx.MaxLength = 14
+        HibbupUriTxtBx.MaxLength = 14
+
     End Sub
 
     Private Function GetFileName(ByVal path As String) As String
         Dim filename As String = System.IO.Path.GetFileName(path)
         Return filename
     End Function
-    Public Sub TextBoxValidation()
+    Public Sub TextBoxEmptyValidation()
         Dim flag As Boolean = True
 
         For Each cntrl As Control In Panel1.Controls
@@ -38,6 +69,35 @@ Public Class Form1
         Next
     End Sub
 
+    Public Sub TextBoxColorValidation()
+        For Each cntrl As Control In Panel1.Controls
+            If TypeOf cntrl Is TextBox Then
+                If CType(cntrl, TextBox).Enabled.Equals(True) Then
+                    If CType(cntrl, TextBox).Text.Equals(String.Empty) Or (CType(cntrl, TextBox).Text = "") Then
+                        CType(cntrl, TextBox).BackColor = Color.White
+                    Else
+                        CType(cntrl, TextBox).BackColor = Color.LightGreen
+                    End If
+                Else
+                    CType(cntrl, TextBox).BackColor = Color.White
+                End If
+            End If
+        Next
+    End Sub
+
+    Public Sub ControlStatusChange(ByRef CntrlStat As Boolean)
+        For Each cntrl As Control In Panel1.Controls
+            If cntrl.Name <> "TempoMeiTxtBx" Then
+                If CntrlStat Then
+                    cntrl.Enabled = True
+                Else
+                    cntrl.Enabled = False
+                End If
+            End If
+        Next
+    End Sub
+
+    'テキストボックスの状態に応じて色を変える機能
     Public Sub FilledTxtBox(ByVal cntrlTxtxBx As Control)
         If cntrlTxtxBx.Text <> "" Then
             cntrlTxtxBx.BackColor = Color.LightGreen
@@ -48,17 +108,32 @@ Public Class Form1
 
     Private Sub clear1Btn_Click(sender As Object, e As EventArgs) Handles clear1Btn.Click
         Dim dialog As DialogResult
-        dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo)
 
+        dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo)
         If dialog = DialogResult.Yes Then
+            'テキストボックス空に設定
             TempoMeiTxtBx.Text = ""
             NenDoTxtBx.Text = ""
             IryouhinTxtBx.Text = ""
+            IryouUriTxtBx.Text = ""
             JukyoyokaTxtBx.Text = ""
+            JukyoUriTxtBx.Text = ""
             ShokuhinTxtBx.Text = ""
+            ShokuUriTxtBx.Text = ""
             HibuppanTxtBx.Text = ""
+            HibbupUriTxtBx.Text = ""
             ResultShareTxtBx.Text = ""
 
+            '色設定デフォルト（白色）
+            TempoMeiTxtBx.BackColor = Color.White
+            NenDoTxtBx.BackColor = Color.White
+            IryouhinTxtBx.BackColor = Color.White
+            JukyoyokaTxtBx.BackColor = Color.White
+            ShokuhinTxtBx.BackColor = Color.White
+            HibuppanTxtBx.BackColor = Color.White
+            ResultShareTxtBx.BackColor = Color.White
+
+            'DataGridView空に設定
             DataGridView1.Rows.Clear()
             DataGridView1.Columns.Clear()
         End If
@@ -69,6 +144,7 @@ Public Class Form1
         dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo)
 
         If dialog = DialogResult.Yes Then
+            'テキストボックス空に設定
             KurumaJikanTxtBx.Text = ""
             DoushinenTxtBx.Text = ""
             JisseiMapTxtBx.Text = ""
@@ -76,6 +152,15 @@ Public Class Form1
             Chirashi2TxtBx.Text = ""
             Chirashi3TxtBx.Text = ""
             SaveFolderTxtBx.Text = ""
+
+            '色設定デフォルト（白色）
+            KurumaJikanTxtBx.BackColor = Color.White
+            DoushinenTxtBx.BackColor = Color.White
+            JisseiMapTxtBx.BackColor = Color.White
+            Chirashi1TxtBx.BackColor = Color.White
+            Chirashi2TxtBx.BackColor = Color.White
+            Chirashi3TxtBx.BackColor = Color.White
+            SaveFolderTxtBx.BackColor = Color.White
         End If
     End Sub
 
@@ -129,7 +214,17 @@ Public Class Form1
     End Sub
 
     Private Sub TempoMeiTxtBx_TextChanged(sender As Object, e As EventArgs) Handles TempoMeiTxtBx.TextChanged
+
+        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
+            'テキストボックス・ボタンの有効化ステータス（TRUE）
+            ControlStatusChange(True)
+        Else
+            'テキストボックス・ボタンの有効化ステータス（TRUE）
+            ControlStatusChange(False)
+        End If
+
         FilledTxtBox(TempoMeiTxtBx)
+        TextBoxColorValidation()
     End Sub
 
     Private Sub NenDoTxtBx_TextChanged(sender As Object, e As EventArgs) Handles NenDoTxtBx.TextChanged
@@ -152,23 +247,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                '衣料品入力
-                csvReader(filePathData.Path)
-                MessageBox.Show("CSVファイル入力しました。")
-            Else
-                MessageBox.Show(".CSVファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            csvReader(filePathData.Path)
+            MessageBox.Show("CSVファイル入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".CSVファイルのみを入力してください。")
         End If
 
-        IryouhinTxtBx.Text = fullPath
-
+        IryouhinTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub JukyoyokaTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JukyoyokaTxtBx.TextChanged
@@ -187,22 +273,15 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'CSV入力入力
-                csvReader(filePathData.Path)
-                MessageBox.Show("CSVファイル入力しました。")
-            Else
-                MessageBox.Show(".csvファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'CSV入力入力
+            csvReader(filePathData.Path)
+            MessageBox.Show("CSVファイル入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".csvファイルのみを入力してください。")
         End If
 
-        JukyoyokaTxtBx.Text = fullPath
+        JukyoyokaTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub ShokuhinTxtBx_TextChanged(sender As Object, e As EventArgs) Handles ShokuhinTxtBx.TextChanged
@@ -221,22 +300,15 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'CSV入力
-                csvReader(filePathData.Path)
-                MessageBox.Show("CSVファイル入力しました。")
-            Else
-                MessageBox.Show(".csvファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'CSV入力
+            csvReader(filePathData.Path)
+            MessageBox.Show("CSVファイル入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".csvファイルのみを入力してください。")
         End If
 
-        ShokuhinTxtBx.Text = fullPath
+        ShokuhinTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub HibuppanTxtBx_TextChanged(sender As Object, e As EventArgs) Handles HibuppanTxtBx.TextChanged
@@ -255,22 +327,15 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'CSV入力
-                csvReader(filePathData.Path)
-                MessageBox.Show("CSVファイル入力しました。")
-            Else
-                MessageBox.Show(".csvファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'CSV入力
+            csvReader(filePathData.Path)
+            MessageBox.Show("CSVファイル入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".csvファイルのみを入力してください。")
         End If
 
-        HibuppanTxtBx.Text = fullPath
+        HibuppanTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub ResultShareTxtBx_TextChanged(sender As Object, e As EventArgs) Handles ResultShareTxtBx.TextChanged
@@ -289,21 +354,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                '.mdbファイル入力
-                MessageBox.Show(".mdbファイル入力しました。")
-            Else
-                MessageBox.Show(".mdbファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            '.mdbファイル入力
+            MessageBox.Show(".mdbファイル入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".mdbファイルのみを入力してください。")
         End If
 
-        ResultShareTxtBx.Text = fullPath
+        ResultShareTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub KurumaJikanTxtBx_TextChanged(sender As Object, e As EventArgs) Handles KurumaJikanTxtBx.TextChanged
@@ -322,21 +380,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                '車時間入力
-                MessageBox.Show("車時間入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            '車時間入力
+            MessageBox.Show("車時間入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        KurumaJikanTxtBx.Text = fullPath
+        KurumaJikanTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub DoushinenTxtBx_TextChanged(sender As Object, e As EventArgs) Handles DoushinenTxtBx.TextChanged
@@ -355,22 +406,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                '同心円入力
-                MessageBox.Show("同心円入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            '同心円入力
+            MessageBox.Show("同心円入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        DoushinenTxtBx.Text = fullPath
-
+        DoushinenTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub JisseiMapTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JisseiMapTxtBx.TextChanged
@@ -389,21 +432,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                '実勢商圏入力
-                MessageBox.Show("実勢商圏入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            '実勢商圏入力
+            MessageBox.Show("実勢商圏入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        JisseiMapTxtBx.Text = fullPath
+        JisseiMapTxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub Chirashi1TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi1TxtBx.TextChanged
@@ -423,21 +459,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'チラシ入力
-                MessageBox.Show("チラシ1入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'チラシ入力
+            MessageBox.Show("チラシ1入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        Chirashi1TxtBx.Text = fullPath
+        Chirashi1TxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub Chirashi2TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi2TxtBx.TextChanged
@@ -456,21 +485,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'チラシ入力
-                MessageBox.Show("チラシ2入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'チラシ入力
+            MessageBox.Show("チラシ2入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        Chirashi2TxtBx.Text = fullPath
+        Chirashi2TxtBx.Text = filePathData.Path
     End Sub
 
     Private Sub Chirashi3TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi3TxtBx.TextChanged
@@ -489,21 +511,14 @@ Public Class Form1
 
         Dim filePathData = getFilePath(filePath, fileType)
 
-        If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
-            If filePathData.Flag Then
-                'チラシ入力
-                MessageBox.Show("チラシ3入力しました。")
-            Else
-                MessageBox.Show(".TABファイルのみを入力してください。")
-            End If
-
-            fullPath = filePathData.Path
+        If filePathData.Flag Then
+            'チラシ入力
+            MessageBox.Show("チラシ3入力しました。")
         Else
-            fullPath = ""
-            MessageBox.Show("店舗名を入力して下さい。")
+            MessageBox.Show(".TABファイルのみを入力してください。")
         End If
 
-        Chirashi3TxtBx.Text = fullPath
+        Chirashi3TxtBx.Text = filePathData.Path
     End Sub
 
     'Public Shared Sub ConvertAnWorksheetToCsv(ByVal Path As String)
@@ -566,29 +581,50 @@ Public Class Form1
     End Sub
 
     Private Sub ShareCalcBtn_Click(sender As Object, e As EventArgs) Handles ShareCalcBtn.Click
-        TextBoxValidation()
+        TextBoxEmptyValidation()
     End Sub
 
     Private Sub ShareWPCBtn_Click(sender As Object, e As EventArgs) Handles ShareWPCBtn.Click
-        TextBoxValidation()
+        TextBoxEmptyValidation()
     End Sub
 
     Private Sub CreatePolygonBtn_Click(sender As Object, e As EventArgs) Handles CreatePolygonBtn.Click
-        TextBoxValidation()
+        TextBoxEmptyValidation()
     End Sub
 
     Private Sub CreateJisseiBtn_Click(sender As Object, e As EventArgs) Handles CreateJisseiBtn.Click
-        TextBoxValidation()
+        TextBoxEmptyValidation()
     End Sub
 
+    'Validation for 全角・半角 ( StrConv() function can only used in Japan )
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim text As String = TempoMeiTxtBx.Text
         Dim hankaku, zenkaku As String
 
-        hankaku = Strings.StrConv(text, 4)
+        hankaku = Strings.StrConv(text, Microsoft.VisualBasic.VbStrConv.Wide, &H411)
         Console.WriteLine(hankaku) '123ｱｲｳあいう
 
         zenkaku = Strings.StrConv(text, VbStrConv.Wide)
         Console.WriteLine(zenkaku) '１２３アイウあいう
+    End Sub
+
+    Private Sub IryouUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles IryouUriTxtBx.TextChanged
+        IryouUriTxtBx.TextAlign = HorizontalAlignment.Center
+        FilledTxtBox(IryouUriTxtBx)
+    End Sub
+
+    Private Sub JukyoUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JukyoUriTxtBx.TextChanged
+        JukyoUriTxtBx.TextAlign = HorizontalAlignment.Center
+        FilledTxtBox(JukyoUriTxtBx)
+    End Sub
+
+    Private Sub ShokuUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles ShokuUriTxtBx.TextChanged
+        ShokuUriTxtBx.TextAlign = HorizontalAlignment.Center
+        FilledTxtBox(ShokuUriTxtBx)
+    End Sub
+
+    Private Sub HibbupUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles HibbupUriTxtBx.TextChanged
+        HibbupUriTxtBx.TextAlign = HorizontalAlignment.Center
+        FilledTxtBox(HibbupUriTxtBx)
     End Sub
 End Class
