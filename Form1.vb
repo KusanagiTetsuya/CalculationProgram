@@ -5,9 +5,9 @@ Imports System.Data.SqlClient
 
 Public Class Form1
     Dim Conn As SqlConnection
-    Dim Da As SqlDataAdapter
-    Dim Ds As DataSet
     Dim MyDB As String
+    Dim Ds As New DataSet
+    Dim Da As SqlDataAdapter
 
     Sub ConnectionDB()
         MyDB = "Data Source = 192.168.1.3; initial catalog=WPC;User ID=sa;Password=Msmskmykmsny7741;Integrated Security=False;Trusted_Connection=False;"
@@ -15,34 +15,52 @@ Public Class Form1
 
         If Conn.State = ConnectionState.Closed Then
             Conn.Open()
-            MsgBox("DB Connected")
+            'MsgBox("DB Connected")
         End If
     End Sub
-
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Call ConnectionDB()
 
-        Da = New SqlDataAdapter("Select * from T_AMTenpoArea", Conn)
-        Ds = New DataSet
+        Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile]", Conn)
+        Da = New SqlDataAdapter(cmd)
+
+        Dim autoCmpltStr As New AutoCompleteStringCollection
 
         Ds.Clear()
-        Da.Fill(Ds, "T_AMTenpoArea")
-        'DataGridView1.DataSource = Ds.Tables("T_AMTenpoArea")
+        Da.Fill(Ds)
+
+        'オートコンプリート文字列
+        For i As Integer = 0 To Ds.Tables(0).Rows.Count - 1
+            autoCmpltStr.Add(Ds.Tables(0).Rows(i)("店舗名称").ToString)
+        Next
+        TempoMeiTxtBx.AutoCompleteSource = AutoCompleteSource.CustomSource
+        TempoMeiTxtBx.AutoCompleteCustomSource = autoCmpltStr
+        TempoMeiTxtBx.AutoCompleteMode = AutoCompleteMode.Suggest
+
+        'If Ds.Tables(0).Rows.Count > 0 Then
+        '    If TempoMeiTxtBx.Text = Ds.Tables(0).Rows(0)(0).ToString() Then
+        '        MsgBox("OK")
+        '    End If
+        '
+        '    'IryouhinTxtBx.Text = Ds.Tables(0).Rows(0)(0).ToString()
+        '    'JukyoUriTxtBx.Text = Ds.Tables(0).Rows(0)(1).ToString()
+        '    'ShokuhinTxtBx.Text = Ds.Tables(0).Rows(0)(2).ToString()
+        'End If
 
         '番号のみのテキストボックスの設定
         AssignValidation(NenDoTxtBx, ValidationType.Only_Numbers)
         AssignValidation(IryouUriTxtBx, ValidationType.Only_Numbers)
         AssignValidation(JukyoUriTxtBx, ValidationType.Only_Numbers)
         AssignValidation(ShokuUriTxtBx, ValidationType.Only_Numbers)
-        AssignValidation(HibbupUriTxtBx, ValidationType.Only_Numbers)
+        AssignValidation(HibupUriTxtBx, ValidationType.Only_Numbers)
 
         '最大桁数の設定
         NenDoTxtBx.MaxLength = 4
         IryouUriTxtBx.MaxLength = 14
         JukyoUriTxtBx.MaxLength = 14
         ShokuUriTxtBx.MaxLength = 14
-        HibbupUriTxtBx.MaxLength = 14
+        HibupUriTxtBx.MaxLength = 14
 
     End Sub
 
@@ -50,19 +68,17 @@ Public Class Form1
         Dim filename As String = System.IO.Path.GetFileName(path)
         Return filename
     End Function
+
     Public Sub TextBoxEmptyValidation()
         Dim flag As Boolean = True
 
         For Each cntrl As Control In Panel1.Controls
             If TypeOf cntrl Is TextBox Then
-
                 If CType(cntrl, TextBox).Text.Equals(String.Empty) Or (CType(cntrl, TextBox).Text = "") Then
                     If flag Then
-                        'MessageBox.Show(cntrl.Name.ToString() & "は空です。確認してください。")
                         MessageBox.Show("空のボックスにすべて記入してください。")
                         flag = False
                     End If
-
                     cntrl.BackColor = Color.OrangeRed
                 End If
             End If
@@ -70,29 +86,51 @@ Public Class Form1
     End Sub
 
     Public Sub TextBoxColorValidation()
-        For Each cntrl As Control In Panel1.Controls
-            If TypeOf cntrl Is TextBox Then
-                If CType(cntrl, TextBox).Enabled.Equals(True) Then
-                    If CType(cntrl, TextBox).Text.Equals(String.Empty) Or (CType(cntrl, TextBox).Text = "") Then
-                        CType(cntrl, TextBox).BackColor = Color.White
+        For Each cntrl1 As Control In Panel1.Controls
+            If TypeOf cntrl1 Is TextBox Then
+                If CType(cntrl1, TextBox).Enabled.Equals(True) Then
+                    If CType(cntrl1, TextBox).Text.Equals(String.Empty) Or (CType(cntrl1, TextBox).Text = "") Then
+                        CType(cntrl1, TextBox).BackColor = Color.White
                     Else
-                        CType(cntrl, TextBox).BackColor = Color.LightGreen
+                        CType(cntrl1, TextBox).BackColor = Color.LightGreen
                     End If
                 Else
-                    CType(cntrl, TextBox).BackColor = Color.White
+                    CType(cntrl1, TextBox).BackColor = Color.White
+                End If
+            End If
+        Next
+
+        For Each cntrl2 As Control In Panel2.Controls
+            If TypeOf cntrl2 Is TextBox Then
+                If CType(cntrl2, TextBox).Enabled.Equals(True) Then
+                    If CType(cntrl2, TextBox).Text.Equals(String.Empty) Or (CType(cntrl2, TextBox).Text = "") Then
+                        CType(cntrl2, TextBox).BackColor = Color.White
+                    Else
+                        CType(cntrl2, TextBox).BackColor = Color.LightGreen
+                    End If
+                Else
+                    CType(cntrl2, TextBox).BackColor = Color.White
                 End If
             End If
         Next
     End Sub
 
     Public Sub ControlStatusChange(ByRef CntrlStat As Boolean)
-        For Each cntrl As Control In Panel1.Controls
-            If cntrl.Name <> "TempoMeiTxtBx" Then
+        For Each cntrl1 As Control In Panel1.Controls
+            If cntrl1.Name <> "TempoMeiTxtBx" Then
                 If CntrlStat Then
-                    cntrl.Enabled = True
+                    cntrl1.Enabled = True
                 Else
-                    cntrl.Enabled = False
+                    cntrl1.Enabled = False
                 End If
+            End If
+        Next
+
+        For Each cntrl2 As Control In Panel2.Controls
+            If CntrlStat Then
+                cntrl2.Enabled = True
+            Else
+                cntrl2.Enabled = False
             End If
         Next
     End Sub
@@ -109,20 +147,10 @@ Public Class Form1
     Private Sub clear1Btn_Click(sender As Object, e As EventArgs) Handles clear1Btn.Click
         Dim dialog As DialogResult
 
-        dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo)
+        dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo, "注意")
         If dialog = DialogResult.Yes Then
             'テキストボックス空に設定
             TempoMeiTxtBx.Text = ""
-            NenDoTxtBx.Text = ""
-            IryouhinTxtBx.Text = ""
-            IryouUriTxtBx.Text = ""
-            JukyoyokaTxtBx.Text = ""
-            JukyoUriTxtBx.Text = ""
-            ShokuhinTxtBx.Text = ""
-            ShokuUriTxtBx.Text = ""
-            HibuppanTxtBx.Text = ""
-            HibbupUriTxtBx.Text = ""
-            ResultShareTxtBx.Text = ""
 
             '色設定デフォルト（白色）
             TempoMeiTxtBx.BackColor = Color.White
@@ -132,28 +160,6 @@ Public Class Form1
             ShokuhinTxtBx.BackColor = Color.White
             HibuppanTxtBx.BackColor = Color.White
             ResultShareTxtBx.BackColor = Color.White
-
-            'DataGridView空に設定
-            DataGridView1.Rows.Clear()
-            DataGridView1.Columns.Clear()
-        End If
-    End Sub
-
-    Private Sub clear2Btn_Click(sender As Object, e As EventArgs) Handles clear2Btn.Click
-        Dim dialog As DialogResult
-        dialog = MsgBox("全て削除しますか。", MsgBoxStyle.YesNo)
-
-        If dialog = DialogResult.Yes Then
-            'テキストボックス空に設定
-            KurumaJikanTxtBx.Text = ""
-            DoushinenTxtBx.Text = ""
-            JisseiMapTxtBx.Text = ""
-            Chirashi1TxtBx.Text = ""
-            Chirashi2TxtBx.Text = ""
-            Chirashi3TxtBx.Text = ""
-            SaveFolderTxtBx.Text = ""
-
-            '色設定デフォルト（白色）
             KurumaJikanTxtBx.BackColor = Color.White
             DoushinenTxtBx.BackColor = Color.White
             JisseiMapTxtBx.BackColor = Color.White
@@ -161,6 +167,10 @@ Public Class Form1
             Chirashi2TxtBx.BackColor = Color.White
             Chirashi3TxtBx.BackColor = Color.White
             SaveFolderTxtBx.BackColor = Color.White
+
+            'DataGridView空に設定
+            DataGridView1.Rows.Clear()
+            DataGridView1.Columns.Clear()
         End If
     End Sub
 
@@ -214,12 +224,81 @@ Public Class Form1
     End Sub
 
     Private Sub TempoMeiTxtBx_TextChanged(sender As Object, e As EventArgs) Handles TempoMeiTxtBx.TextChanged
+        Dim testString As String
+        Dim testString1 As String
+        Dim testString2 As String
+
+        'テキストボックス空に設定
+        NenDoTxtBx.Text = ""
+        IryouhinTxtBx.Text = ""
+        IryouUriTxtBx.Text = ""
+        JukyoyokaTxtBx.Text = ""
+        JukyoUriTxtBx.Text = ""
+        ShokuhinTxtBx.Text = ""
+        ShokuUriTxtBx.Text = ""
+        HibuppanTxtBx.Text = ""
+        HibupUriTxtBx.Text = ""
+        ResultShareTxtBx.Text = ""
+        KurumaJikanTxtBx.Text = ""
+        DoushinenTxtBx.Text = ""
+        JisseiMapTxtBx.Text = ""
+        Chirashi1TxtBx.Text = ""
+        Chirashi2TxtBx.Text = ""
+        Chirashi3TxtBx.Text = ""
+        SaveFolderTxtBx.Text = ""
+
+        For i As Integer = 0 To Ds.Tables(0).Rows.Count - 1
+            testString = Ds.Tables(0).Rows(i)(0).ToString()
+            If TempoMeiTxtBx.Text = testString Then
+
+                testString1 = Ds.Tables(0).Rows(i)(1).ToString()
+                'MsgBox(i)
+                Select Case testString1
+                    Case "Iryouhin"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        IryouhinTxtBx.Text = testString2
+                    Case "Jukyoyoka"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        JukyoyokaTxtBx.Text = testString2
+                    Case "Shokuhin"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        ShokuhinTxtBx.Text = testString2
+                    Case "Hibuppan"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        HibuppanTxtBx.Text = testString2
+                    Case "Kuruma"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        KurumaJikanTxtBx.Text = testString2
+                    Case "Dousin"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        DoushinenTxtBx.Text = testString2
+                    Case "Region1"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        Chirashi1TxtBx.Text = testString2
+                    Case "Region2"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        Chirashi2TxtBx.Text = testString2
+                    Case "Region3"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        Chirashi3TxtBx.Text = testString2
+                    Case "Jissei"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        JisseiMapTxtBx.Text = testString2
+                    Case "ResultShare"
+                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
+                        ResultShareTxtBx.Text = testString2
+                    Case Else
+                        'Nothing
+                End Select
+            End If
+        Next
+
 
         If String.IsNullOrEmpty(TempoMeiTxtBx.Text) = False Then
             'テキストボックス・ボタンの有効化ステータス（TRUE）
             ControlStatusChange(True)
         Else
-            'テキストボックス・ボタンの有効化ステータス（TRUE）
+            'テキストボックス・ボタンの有効化ステータス（FALSE）
             ControlStatusChange(False)
         End If
 
@@ -255,6 +334,7 @@ Public Class Form1
         End If
 
         IryouhinTxtBx.Text = filePathData.Path
+        uploadToDB("Iryouhin", filePathData.Path)
     End Sub
 
     Private Sub JukyoyokaTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JukyoyokaTxtBx.TextChanged
@@ -282,6 +362,7 @@ Public Class Form1
         End If
 
         JukyoyokaTxtBx.Text = filePathData.Path
+        uploadToDB("Jukyoyoka", filePathData.Path)
     End Sub
 
     Private Sub ShokuhinTxtBx_TextChanged(sender As Object, e As EventArgs) Handles ShokuhinTxtBx.TextChanged
@@ -309,6 +390,7 @@ Public Class Form1
         End If
 
         ShokuhinTxtBx.Text = filePathData.Path
+        uploadToDB("Shokuhin", filePathData.Path)
     End Sub
 
     Private Sub HibuppanTxtBx_TextChanged(sender As Object, e As EventArgs) Handles HibuppanTxtBx.TextChanged
@@ -336,6 +418,7 @@ Public Class Form1
         End If
 
         HibuppanTxtBx.Text = filePathData.Path
+        uploadToDB("Hibuppan", filePathData.Path)
     End Sub
 
     Private Sub ResultShareTxtBx_TextChanged(sender As Object, e As EventArgs) Handles ResultShareTxtBx.TextChanged
@@ -362,6 +445,7 @@ Public Class Form1
         End If
 
         ResultShareTxtBx.Text = filePathData.Path
+        uploadToDB("ResultShare", filePathData.Path)
     End Sub
 
     Private Sub KurumaJikanTxtBx_TextChanged(sender As Object, e As EventArgs) Handles KurumaJikanTxtBx.TextChanged
@@ -388,6 +472,7 @@ Public Class Form1
         End If
 
         KurumaJikanTxtBx.Text = filePathData.Path
+        uploadToDB("Kuruma", filePathData.Path)
     End Sub
 
     Private Sub DoushinenTxtBx_TextChanged(sender As Object, e As EventArgs) Handles DoushinenTxtBx.TextChanged
@@ -414,6 +499,7 @@ Public Class Form1
         End If
 
         DoushinenTxtBx.Text = filePathData.Path
+        uploadToDB("Dousin", filePathData.Path)
     End Sub
 
     Private Sub JisseiMapTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JisseiMapTxtBx.TextChanged
@@ -440,6 +526,7 @@ Public Class Form1
         End If
 
         JisseiMapTxtBx.Text = filePathData.Path
+        uploadToDB("Jissei", filePathData.Path)
     End Sub
 
     Private Sub Chirashi1TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi1TxtBx.TextChanged
@@ -467,6 +554,7 @@ Public Class Form1
         End If
 
         Chirashi1TxtBx.Text = filePathData.Path
+        uploadToDB("Region1", filePathData.Path)
     End Sub
 
     Private Sub Chirashi2TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi2TxtBx.TextChanged
@@ -493,6 +581,7 @@ Public Class Form1
         End If
 
         Chirashi2TxtBx.Text = filePathData.Path
+        uploadToDB("Region2", filePathData.Path)
     End Sub
 
     Private Sub Chirashi3TxtBx_TextChanged(sender As Object, e As EventArgs) Handles Chirashi3TxtBx.TextChanged
@@ -519,6 +608,7 @@ Public Class Form1
         End If
 
         Chirashi3TxtBx.Text = filePathData.Path
+        uploadToDB("Region3", filePathData.Path)
     End Sub
 
     'Public Shared Sub ConvertAnWorksheetToCsv(ByVal Path As String)
@@ -596,18 +686,6 @@ Public Class Form1
         TextBoxEmptyValidation()
     End Sub
 
-    'Validation for 全角・半角 ( StrConv() function can only used in Japan )
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim text As String = TempoMeiTxtBx.Text
-        Dim hankaku, zenkaku As String
-
-        hankaku = Strings.StrConv(text, Microsoft.VisualBasic.VbStrConv.Wide, &H411)
-        Console.WriteLine(hankaku) '123ｱｲｳあいう
-
-        zenkaku = Strings.StrConv(text, VbStrConv.Wide)
-        Console.WriteLine(zenkaku) '１２３アイウあいう
-    End Sub
-
     Private Sub IryouUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles IryouUriTxtBx.TextChanged
         IryouUriTxtBx.TextAlign = HorizontalAlignment.Center
         FilledTxtBox(IryouUriTxtBx)
@@ -623,8 +701,39 @@ Public Class Form1
         FilledTxtBox(ShokuUriTxtBx)
     End Sub
 
-    Private Sub HibbupUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles HibbupUriTxtBx.TextChanged
-        HibbupUriTxtBx.TextAlign = HorizontalAlignment.Center
-        FilledTxtBox(HibbupUriTxtBx)
+    Private Sub HibupUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles HibupUriTxtBx.TextChanged
+        HibupUriTxtBx.TextAlign = HorizontalAlignment.Center
+        FilledTxtBox(HibupUriTxtBx)
+    End Sub
+
+    'Validation for 全角・半角 ( StrConv() function can only used in Japan )
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile] WHERE [店舗名称] = @TempoMei AND [種別] = 'Iryouhin'", Conn)
+        cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+
+        Dim reader As SqlDataReader = cmd.ExecuteReader()
+        If reader.HasRows Then
+            MsgBox("Already exist!")
+        Else
+            MsgBox("Not exist!")
+        End If
+
+    End Sub
+
+    Sub uploadToDB(ByRef dataType As String, ByVal pathName As String)
+        'Conn.Close()
+        Dim cmd As SqlCommand = New SqlCommand("INSERT INTO [dbo].[T_AMTourokuFile]
+           ([店舗名称]
+           ,[種別]
+           ,[FilePath])
+            VALUES
+           ('" + TempoMeiTxtBx.Text + "','" + dataType + "','" + pathName + "')", Conn)
+
+        If Conn.State = ConnectionState.Closed Then
+            Conn.Open()
+        End If
+
+        cmd.ExecuteNonQuery()
+        Conn.Close()
     End Sub
 End Class

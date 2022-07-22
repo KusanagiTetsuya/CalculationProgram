@@ -23,24 +23,26 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Chirashi3TxtBx = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.HibbupUriTxtBx = New System.Windows.Forms.TextBox()
+        Me.HibupUriTxtBx = New System.Windows.Forms.TextBox()
         Me.Label18 = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Chirashi3TxtBx = New System.Windows.Forms.TextBox()
+        Me.JisseiMapTxtBx = New System.Windows.Forms.TextBox()
         Me.Chirashi2TxtBx = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Chirashi1TxtBx = New System.Windows.Forms.TextBox()
         Me.ShokuUriTxtBx = New System.Windows.Forms.TextBox()
         Me.Label17 = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.JukyoUriTxtBx = New System.Windows.Forms.TextBox()
-        Me.Label9 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
-        Me.Chirashi1TxtBx = New System.Windows.Forms.TextBox()
         Me.IryouUriTxtBx = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.HibuppanTxtBx = New System.Windows.Forms.TextBox()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.clear2Btn = New System.Windows.Forms.Button()
         Me.ShokuhinTxtBx = New System.Windows.Forms.TextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.JukyoyokaTxtBx = New System.Windows.Forms.TextBox()
@@ -52,8 +54,6 @@ Partial Class Form1
         Me.ShareCalcBtn = New System.Windows.Forms.Button()
         Me.SaveFolderTxtBx = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
-        Me.JisseiMapTxtBx = New System.Windows.Forms.TextBox()
-        Me.Label11 = New System.Windows.Forms.Label()
         Me.DoushinenTxtBx = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.KurumaJikanTxtBx = New System.Windows.Forms.TextBox()
@@ -68,30 +68,25 @@ Partial Class Form1
         Me.TempoMeiTxtBx = New System.Windows.Forms.TextBox()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.Gainsboro
-        Me.Panel1.Controls.Add(Me.Chirashi3TxtBx)
-        Me.Panel1.Controls.Add(Me.Label8)
-        Me.Panel1.Controls.Add(Me.HibbupUriTxtBx)
+        Me.Panel1.Controls.Add(Me.HibupUriTxtBx)
         Me.Panel1.Controls.Add(Me.Label18)
-        Me.Panel1.Controls.Add(Me.Chirashi2TxtBx)
+        Me.Panel1.Controls.Add(Me.Panel2)
         Me.Panel1.Controls.Add(Me.ShokuUriTxtBx)
         Me.Panel1.Controls.Add(Me.Label17)
-        Me.Panel1.Controls.Add(Me.Label10)
         Me.Panel1.Controls.Add(Me.JukyoUriTxtBx)
-        Me.Panel1.Controls.Add(Me.Label9)
         Me.Panel1.Controls.Add(Me.Label16)
-        Me.Panel1.Controls.Add(Me.Chirashi1TxtBx)
         Me.Panel1.Controls.Add(Me.IryouUriTxtBx)
         Me.Panel1.Controls.Add(Me.Label15)
         Me.Panel1.Controls.Add(Me.Button1)
         Me.Panel1.Controls.Add(Me.HibuppanTxtBx)
         Me.Panel1.Controls.Add(Me.Label14)
-        Me.Panel1.Controls.Add(Me.clear2Btn)
         Me.Panel1.Controls.Add(Me.ShokuhinTxtBx)
         Me.Panel1.Controls.Add(Me.Label13)
         Me.Panel1.Controls.Add(Me.JukyoyokaTxtBx)
@@ -103,8 +98,6 @@ Partial Class Form1
         Me.Panel1.Controls.Add(Me.ShareCalcBtn)
         Me.Panel1.Controls.Add(Me.SaveFolderTxtBx)
         Me.Panel1.Controls.Add(Me.Label12)
-        Me.Panel1.Controls.Add(Me.JisseiMapTxtBx)
-        Me.Panel1.Controls.Add(Me.Label11)
         Me.Panel1.Controls.Add(Me.DoushinenTxtBx)
         Me.Panel1.Controls.Add(Me.Label7)
         Me.Panel1.Controls.Add(Me.KurumaJikanTxtBx)
@@ -122,35 +115,15 @@ Partial Class Form1
         Me.Panel1.Size = New System.Drawing.Size(514, 545)
         Me.Panel1.TabIndex = 0
         '
-        'Chirashi3TxtBx
+        'HibupUriTxtBx
         '
-        Me.Chirashi3TxtBx.AllowDrop = True
-        Me.Chirashi3TxtBx.Enabled = False
-        Me.Chirashi3TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.Chirashi3TxtBx.Location = New System.Drawing.Point(268, 409)
-        Me.Chirashi3TxtBx.Name = "Chirashi3TxtBx"
-        Me.Chirashi3TxtBx.Size = New System.Drawing.Size(235, 23)
-        Me.Chirashi3TxtBx.TabIndex = 19
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label8.Location = New System.Drawing.Point(268, 295)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(71, 16)
-        Me.Label8.TabIndex = 14
-        Me.Label8.Text = "チラシ1 Map"
-        '
-        'HibbupUriTxtBx
-        '
-        Me.HibbupUriTxtBx.AllowDrop = True
-        Me.HibbupUriTxtBx.Enabled = False
-        Me.HibbupUriTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.HibbupUriTxtBx.Location = New System.Drawing.Point(373, 188)
-        Me.HibbupUriTxtBx.Name = "HibbupUriTxtBx"
-        Me.HibbupUriTxtBx.Size = New System.Drawing.Size(130, 23)
-        Me.HibbupUriTxtBx.TabIndex = 45
+        Me.HibupUriTxtBx.AllowDrop = True
+        Me.HibupUriTxtBx.Enabled = False
+        Me.HibupUriTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.HibupUriTxtBx.Location = New System.Drawing.Point(373, 188)
+        Me.HibupUriTxtBx.Name = "HibupUriTxtBx"
+        Me.HibupUriTxtBx.Size = New System.Drawing.Size(130, 23)
+        Me.HibupUriTxtBx.TabIndex = 45
         '
         'Label18
         '
@@ -162,15 +135,100 @@ Partial Class Form1
         Me.Label18.TabIndex = 44
         Me.Label18.Text = "売り上げ入力"
         '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.Chirashi3TxtBx)
+        Me.Panel2.Controls.Add(Me.JisseiMapTxtBx)
+        Me.Panel2.Controls.Add(Me.Chirashi2TxtBx)
+        Me.Panel2.Controls.Add(Me.Label11)
+        Me.Panel2.Controls.Add(Me.Label10)
+        Me.Panel2.Controls.Add(Me.Label8)
+        Me.Panel2.Controls.Add(Me.Label9)
+        Me.Panel2.Controls.Add(Me.Chirashi1TxtBx)
+        Me.Panel2.Location = New System.Drawing.Point(3, 271)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(259, 226)
+        Me.Panel2.TabIndex = 2
+        '
+        'Chirashi3TxtBx
+        '
+        Me.Chirashi3TxtBx.AllowDrop = True
+        Me.Chirashi3TxtBx.Enabled = False
+        Me.Chirashi3TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.Chirashi3TxtBx.Location = New System.Drawing.Point(3, 193)
+        Me.Chirashi3TxtBx.Name = "Chirashi3TxtBx"
+        Me.Chirashi3TxtBx.Size = New System.Drawing.Size(235, 23)
+        Me.Chirashi3TxtBx.TabIndex = 19
+        '
+        'JisseiMapTxtBx
+        '
+        Me.JisseiMapTxtBx.AllowDrop = True
+        Me.JisseiMapTxtBx.Enabled = False
+        Me.JisseiMapTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.JisseiMapTxtBx.Location = New System.Drawing.Point(7, 43)
+        Me.JisseiMapTxtBx.Name = "JisseiMapTxtBx"
+        Me.JisseiMapTxtBx.Size = New System.Drawing.Size(235, 23)
+        Me.JisseiMapTxtBx.TabIndex = 21
+        '
         'Chirashi2TxtBx
         '
         Me.Chirashi2TxtBx.AllowDrop = True
         Me.Chirashi2TxtBx.Enabled = False
         Me.Chirashi2TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.Chirashi2TxtBx.Location = New System.Drawing.Point(268, 359)
+        Me.Chirashi2TxtBx.Location = New System.Drawing.Point(7, 140)
         Me.Chirashi2TxtBx.Name = "Chirashi2TxtBx"
         Me.Chirashi2TxtBx.Size = New System.Drawing.Size(235, 23)
         Me.Chirashi2TxtBx.TabIndex = 17
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.Label11.Location = New System.Drawing.Point(7, 24)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(61, 16)
+        Me.Label11.TabIndex = 20
+        Me.Label11.Text = "実勢 Map"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.Label10.Location = New System.Drawing.Point(3, 174)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(71, 16)
+        Me.Label10.TabIndex = 18
+        Me.Label10.Text = "チラシ3 Map"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.Label8.Location = New System.Drawing.Point(7, 69)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(71, 16)
+        Me.Label8.TabIndex = 14
+        Me.Label8.Text = "チラシ1 Map"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.Label9.Location = New System.Drawing.Point(7, 121)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(71, 16)
+        Me.Label9.TabIndex = 16
+        Me.Label9.Text = "チラシ2 Map"
+        '
+        'Chirashi1TxtBx
+        '
+        Me.Chirashi1TxtBx.AllowDrop = True
+        Me.Chirashi1TxtBx.Enabled = False
+        Me.Chirashi1TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.Chirashi1TxtBx.Location = New System.Drawing.Point(7, 88)
+        Me.Chirashi1TxtBx.Name = "Chirashi1TxtBx"
+        Me.Chirashi1TxtBx.Size = New System.Drawing.Size(235, 23)
+        Me.Chirashi1TxtBx.TabIndex = 15
         '
         'ShokuUriTxtBx
         '
@@ -192,16 +250,6 @@ Partial Class Form1
         Me.Label17.TabIndex = 42
         Me.Label17.Text = "売り上げ入力"
         '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label10.Location = New System.Drawing.Point(268, 390)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(71, 16)
-        Me.Label10.TabIndex = 18
-        Me.Label10.Text = "チラシ3 Map"
-        '
         'JukyoUriTxtBx
         '
         Me.JukyoUriTxtBx.AllowDrop = True
@@ -212,16 +260,6 @@ Partial Class Form1
         Me.JukyoUriTxtBx.Size = New System.Drawing.Size(130, 23)
         Me.JukyoUriTxtBx.TabIndex = 41
         '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label9.Location = New System.Drawing.Point(268, 340)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(71, 16)
-        Me.Label9.TabIndex = 16
-        Me.Label9.Text = "チラシ2 Map"
-        '
         'Label16
         '
         Me.Label16.AutoSize = True
@@ -231,16 +269,6 @@ Partial Class Form1
         Me.Label16.Size = New System.Drawing.Size(94, 16)
         Me.Label16.TabIndex = 40
         Me.Label16.Text = "売り上げ入力"
-        '
-        'Chirashi1TxtBx
-        '
-        Me.Chirashi1TxtBx.AllowDrop = True
-        Me.Chirashi1TxtBx.Enabled = False
-        Me.Chirashi1TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.Chirashi1TxtBx.Location = New System.Drawing.Point(268, 314)
-        Me.Chirashi1TxtBx.Name = "Chirashi1TxtBx"
-        Me.Chirashi1TxtBx.Size = New System.Drawing.Size(235, 23)
-        Me.Chirashi1TxtBx.TabIndex = 15
         '
         'IryouUriTxtBx
         '
@@ -264,7 +292,7 @@ Partial Class Form1
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(407, 236)
+        Me.Button1.Location = New System.Drawing.Point(409, 458)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(94, 29)
         Me.Button1.TabIndex = 37
@@ -290,17 +318,6 @@ Partial Class Form1
         Me.Label14.Size = New System.Drawing.Size(55, 16)
         Me.Label14.TabIndex = 34
         Me.Label14.Text = "非物販"
-        '
-        'clear2Btn
-        '
-        Me.clear2Btn.BackColor = System.Drawing.Color.Khaki
-        Me.clear2Btn.Enabled = False
-        Me.clear2Btn.Location = New System.Drawing.Point(266, 458)
-        Me.clear2Btn.Name = "clear2Btn"
-        Me.clear2Btn.Size = New System.Drawing.Size(94, 29)
-        Me.clear2Btn.TabIndex = 29
-        Me.clear2Btn.Text = "クリア"
-        Me.clear2Btn.UseVisualStyleBackColor = False
         '
         'ShokuhinTxtBx
         '
@@ -346,11 +363,11 @@ Partial Class Form1
         '
         Me.clear1Btn.BackColor = System.Drawing.Color.Khaki
         Me.clear1Btn.Enabled = False
-        Me.clear1Btn.Location = New System.Drawing.Point(266, 237)
+        Me.clear1Btn.Location = New System.Drawing.Point(268, 459)
         Me.clear1Btn.Name = "clear1Btn"
         Me.clear1Btn.Size = New System.Drawing.Size(94, 29)
         Me.clear1Btn.TabIndex = 28
-        Me.clear1Btn.Text = "クリア"
+        Me.clear1Btn.Text = "削除"
         Me.clear1Btn.UseVisualStyleBackColor = False
         '
         'CreateJisseiBtn
@@ -406,7 +423,7 @@ Partial Class Form1
         Me.SaveFolderTxtBx.AllowDrop = True
         Me.SaveFolderTxtBx.Enabled = False
         Me.SaveFolderTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.SaveFolderTxtBx.Location = New System.Drawing.Point(10, 463)
+        Me.SaveFolderTxtBx.Location = New System.Drawing.Point(268, 411)
         Me.SaveFolderTxtBx.Name = "SaveFolderTxtBx"
         Me.SaveFolderTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.SaveFolderTxtBx.TabIndex = 23
@@ -415,38 +432,18 @@ Partial Class Form1
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label12.Location = New System.Drawing.Point(10, 444)
+        Me.Label12.Location = New System.Drawing.Point(268, 392)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(86, 16)
         Me.Label12.TabIndex = 22
         Me.Label12.Text = "保存フォルダ"
-        '
-        'JisseiMapTxtBx
-        '
-        Me.JisseiMapTxtBx.AllowDrop = True
-        Me.JisseiMapTxtBx.Enabled = False
-        Me.JisseiMapTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.JisseiMapTxtBx.Location = New System.Drawing.Point(10, 409)
-        Me.JisseiMapTxtBx.Name = "JisseiMapTxtBx"
-        Me.JisseiMapTxtBx.Size = New System.Drawing.Size(235, 23)
-        Me.JisseiMapTxtBx.TabIndex = 21
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label11.Location = New System.Drawing.Point(10, 390)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(61, 16)
-        Me.Label11.TabIndex = 20
-        Me.Label11.Text = "実勢 Map"
         '
         'DoushinenTxtBx
         '
         Me.DoushinenTxtBx.AllowDrop = True
         Me.DoushinenTxtBx.Enabled = False
         Me.DoushinenTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DoushinenTxtBx.Location = New System.Drawing.Point(10, 359)
+        Me.DoushinenTxtBx.Location = New System.Drawing.Point(268, 359)
         Me.DoushinenTxtBx.Name = "DoushinenTxtBx"
         Me.DoushinenTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.DoushinenTxtBx.TabIndex = 13
@@ -455,7 +452,7 @@ Partial Class Form1
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label7.Location = New System.Drawing.Point(10, 340)
+        Me.Label7.Location = New System.Drawing.Point(268, 340)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(77, 16)
         Me.Label7.TabIndex = 12
@@ -466,7 +463,7 @@ Partial Class Form1
         Me.KurumaJikanTxtBx.AllowDrop = True
         Me.KurumaJikanTxtBx.Enabled = False
         Me.KurumaJikanTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.KurumaJikanTxtBx.Location = New System.Drawing.Point(10, 314)
+        Me.KurumaJikanTxtBx.Location = New System.Drawing.Point(268, 314)
         Me.KurumaJikanTxtBx.Name = "KurumaJikanTxtBx"
         Me.KurumaJikanTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.KurumaJikanTxtBx.TabIndex = 11
@@ -475,7 +472,7 @@ Partial Class Form1
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Arial Narrow", 7.2!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.Label6.Location = New System.Drawing.Point(10, 295)
+        Me.Label6.Location = New System.Drawing.Point(268, 295)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(77, 16)
         Me.Label6.TabIndex = 10
@@ -580,6 +577,8 @@ Partial Class Form1
         Me.Text = "モールシェアシステム"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -612,7 +611,6 @@ Partial Class Form1
     Friend WithEvents CreatePolygonBtn As Button
     Friend WithEvents ShareWPCBtn As Button
     Friend WithEvents ShareCalcBtn As Button
-    Friend WithEvents clear2Btn As Button
     Friend WithEvents clear1Btn As Button
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents HibuppanTxtBx As TextBox
@@ -622,7 +620,7 @@ Partial Class Form1
     Friend WithEvents JukyoyokaTxtBx As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents Button1 As Button
-    Friend WithEvents HibbupUriTxtBx As TextBox
+    Friend WithEvents HibupUriTxtBx As TextBox
     Friend WithEvents Label18 As Label
     Friend WithEvents ShokuUriTxtBx As TextBox
     Friend WithEvents Label17 As Label
@@ -630,4 +628,5 @@ Partial Class Form1
     Friend WithEvents Label16 As Label
     Friend WithEvents IryouUriTxtBx As TextBox
     Friend WithEvents Label15 As Label
+    Friend WithEvents Panel2 As Panel
 End Class
