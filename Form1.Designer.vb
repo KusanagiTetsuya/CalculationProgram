@@ -157,6 +157,7 @@ Partial Class Form1
         Me.Chirashi3TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.Chirashi3TxtBx.Location = New System.Drawing.Point(3, 193)
         Me.Chirashi3TxtBx.Name = "Chirashi3TxtBx"
+        Me.Chirashi3TxtBx.ReadOnly = True
         Me.Chirashi3TxtBx.Size = New System.Drawing.Size(235, 23)
         Me.Chirashi3TxtBx.TabIndex = 19
         '
@@ -167,6 +168,7 @@ Partial Class Form1
         Me.JisseiMapTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.JisseiMapTxtBx.Location = New System.Drawing.Point(7, 43)
         Me.JisseiMapTxtBx.Name = "JisseiMapTxtBx"
+        Me.JisseiMapTxtBx.ReadOnly = True
         Me.JisseiMapTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.JisseiMapTxtBx.TabIndex = 21
         '
@@ -177,6 +179,7 @@ Partial Class Form1
         Me.Chirashi2TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.Chirashi2TxtBx.Location = New System.Drawing.Point(7, 140)
         Me.Chirashi2TxtBx.Name = "Chirashi2TxtBx"
+        Me.Chirashi2TxtBx.ReadOnly = True
         Me.Chirashi2TxtBx.Size = New System.Drawing.Size(235, 23)
         Me.Chirashi2TxtBx.TabIndex = 17
         '
@@ -227,6 +230,7 @@ Partial Class Form1
         Me.Chirashi1TxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.Chirashi1TxtBx.Location = New System.Drawing.Point(7, 88)
         Me.Chirashi1TxtBx.Name = "Chirashi1TxtBx"
+        Me.Chirashi1TxtBx.ReadOnly = True
         Me.Chirashi1TxtBx.Size = New System.Drawing.Size(235, 23)
         Me.Chirashi1TxtBx.TabIndex = 15
         '
@@ -306,6 +310,7 @@ Partial Class Form1
         Me.HibuppanTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.HibuppanTxtBx.Location = New System.Drawing.Point(268, 159)
         Me.HibuppanTxtBx.Name = "HibuppanTxtBx"
+        Me.HibuppanTxtBx.ReadOnly = True
         Me.HibuppanTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.HibuppanTxtBx.TabIndex = 35
         '
@@ -326,6 +331,7 @@ Partial Class Form1
         Me.ShokuhinTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.ShokuhinTxtBx.Location = New System.Drawing.Point(10, 157)
         Me.ShokuhinTxtBx.Name = "ShokuhinTxtBx"
+        Me.ShokuhinTxtBx.ReadOnly = True
         Me.ShokuhinTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.ShokuhinTxtBx.TabIndex = 33
         '
@@ -346,6 +352,7 @@ Partial Class Form1
         Me.JukyoyokaTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.JukyoyokaTxtBx.Location = New System.Drawing.Point(268, 72)
         Me.JukyoyokaTxtBx.Name = "JukyoyokaTxtBx"
+        Me.JukyoyokaTxtBx.ReadOnly = True
         Me.JukyoyokaTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.JukyoyokaTxtBx.TabIndex = 31
         '
@@ -425,6 +432,7 @@ Partial Class Form1
         Me.SaveFolderTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.SaveFolderTxtBx.Location = New System.Drawing.Point(268, 411)
         Me.SaveFolderTxtBx.Name = "SaveFolderTxtBx"
+        Me.SaveFolderTxtBx.ReadOnly = True
         Me.SaveFolderTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.SaveFolderTxtBx.TabIndex = 23
         '
@@ -445,6 +453,7 @@ Partial Class Form1
         Me.DoushinenTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.DoushinenTxtBx.Location = New System.Drawing.Point(268, 359)
         Me.DoushinenTxtBx.Name = "DoushinenTxtBx"
+        Me.DoushinenTxtBx.ReadOnly = True
         Me.DoushinenTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.DoushinenTxtBx.TabIndex = 13
         '
@@ -465,6 +474,7 @@ Partial Class Form1
         Me.KurumaJikanTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.KurumaJikanTxtBx.Location = New System.Drawing.Point(268, 314)
         Me.KurumaJikanTxtBx.Name = "KurumaJikanTxtBx"
+        Me.KurumaJikanTxtBx.ReadOnly = True
         Me.KurumaJikanTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.KurumaJikanTxtBx.TabIndex = 11
         '
@@ -485,6 +495,7 @@ Partial Class Form1
         Me.ResultShareTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.ResultShareTxtBx.Location = New System.Drawing.Point(10, 242)
         Me.ResultShareTxtBx.Name = "ResultShareTxtBx"
+        Me.ResultShareTxtBx.ReadOnly = True
         Me.ResultShareTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.ResultShareTxtBx.TabIndex = 9
         '
@@ -505,6 +516,7 @@ Partial Class Form1
         Me.IryouhinTxtBx.Font = New System.Drawing.Font("Segoe UI", 7.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.IryouhinTxtBx.Location = New System.Drawing.Point(10, 70)
         Me.IryouhinTxtBx.Name = "IryouhinTxtBx"
+        Me.IryouhinTxtBx.ReadOnly = True
         Me.IryouhinTxtBx.Size = New System.Drawing.Size(235, 23)
         Me.IryouhinTxtBx.TabIndex = 5
         '

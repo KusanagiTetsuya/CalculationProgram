@@ -8,6 +8,7 @@ Public Class Form1
     Dim MyDB As String
     Dim Ds As New DataSet
     Dim Da As SqlDataAdapter
+    Dim flag As Boolean = False
 
     Sub ConnectionDB()
         MyDB = "Data Source = 192.168.1.3; initial catalog=WPC;User ID=sa;Password=Msmskmykmsny7741;Integrated Security=False;Trusted_Connection=False;"
@@ -37,16 +38,6 @@ Public Class Form1
         TempoMeiTxtBx.AutoCompleteSource = AutoCompleteSource.CustomSource
         TempoMeiTxtBx.AutoCompleteCustomSource = autoCmpltStr
         TempoMeiTxtBx.AutoCompleteMode = AutoCompleteMode.Suggest
-
-        'If Ds.Tables(0).Rows.Count > 0 Then
-        '    If TempoMeiTxtBx.Text = Ds.Tables(0).Rows(0)(0).ToString() Then
-        '        MsgBox("OK")
-        '    End If
-        '
-        '    'IryouhinTxtBx.Text = Ds.Tables(0).Rows(0)(0).ToString()
-        '    'JukyoUriTxtBx.Text = Ds.Tables(0).Rows(0)(1).ToString()
-        '    'ShokuhinTxtBx.Text = Ds.Tables(0).Rows(0)(2).ToString()
-        'End If
 
         '番号のみのテキストボックスの設定
         AssignValidation(NenDoTxtBx, ValidationType.Only_Numbers)
@@ -194,6 +185,70 @@ Public Class Form1
 
         Return (Flag, Path)
     End Function
+
+    Sub uploadToDB(ByRef dataType As String, ByVal pathName As String)
+        'Conn.Close()
+        Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile] WHERE 
+            [店舗名称] = @TempoMei AND 
+            [種別] = '" & dataType & "' AND 
+            [FilePath] = @pathFile", Conn)
+        cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+        cmd.Parameters.AddWithValue("@pathFile", pathName)
+
+        If Conn.State = ConnectionState.Closed Then
+            Conn.Open()
+        End If
+
+        Dim reader As SqlDataReader = cmd.ExecuteReader()
+        If reader.HasRows Then
+
+            '[店舗名称]と[FilePath]はDBに合わせる場合
+            MsgBox("Already exist!")
+        Else
+            Conn.Close()
+            cmd = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile] WHERE 
+            [店舗名称] = @TempoMei AND 
+            [種別] = '" & dataType & "'", Conn)
+
+            If Conn.State = ConnectionState.Closed Then
+                Conn.Open()
+            End If
+
+            cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+            reader = cmd.ExecuteReader()
+            If reader.HasRows Then
+                Conn.Close()
+
+                '[店舗名称]しかDBに合わさない場合
+                cmd = New SqlCommand("UPDATE [dbo].[T_AMTourokuFile]
+                SET [FilePath] = '" & pathName & "'
+                WHERE [店舗名称] = '" & TempoMeiTxtBx.Text & "' AND [種別] = '" & dataType & "'", Conn)
+
+                If Conn.State = ConnectionState.Closed Then
+                    Conn.Open()
+                End If
+
+                cmd.ExecuteNonQuery()
+            Else
+                Conn.Close()
+
+                '[店舗名称]と[FilePath]はDBに合わさない場合
+                cmd = New SqlCommand("INSERT INTO [dbo].[T_AMTourokuFile]
+                ([店舗名称],[種別],[FilePath])
+                VALUES
+                ('" & TempoMeiTxtBx.Text & "','" & dataType & "','" & pathName & "')", Conn)
+
+                If Conn.State = ConnectionState.Closed Then
+                    Conn.Open()
+                End If
+
+                cmd.ExecuteNonQuery()
+            End If
+
+        End If
+
+        Conn.Close()
+    End Sub
     Public Sub csvReader(ByRef Path As String)
         Dim TxtNewLine As String
         Dim IsFlagFound As Boolean = True
@@ -224,9 +279,8 @@ Public Class Form1
     End Sub
 
     Private Sub TempoMeiTxtBx_TextChanged(sender As Object, e As EventArgs) Handles TempoMeiTxtBx.TextChanged
-        Dim testString As String
-        Dim testString1 As String
-        Dim testString2 As String
+        Dim storeNmDatabase As String
+        Dim typeNmDatabase As String
 
         'テキストボックス空に設定
         NenDoTxtBx.Text = ""
@@ -248,45 +302,34 @@ Public Class Form1
         SaveFolderTxtBx.Text = ""
 
         For i As Integer = 0 To Ds.Tables(0).Rows.Count - 1
-            testString = Ds.Tables(0).Rows(i)(0).ToString()
-            If TempoMeiTxtBx.Text = testString Then
+            storeNmDatabase = Ds.Tables(0).Rows(i)(0).ToString()
+            If TempoMeiTxtBx.Text = storeNmDatabase Then
 
-                testString1 = Ds.Tables(0).Rows(i)(1).ToString()
-                'MsgBox(i)
-                Select Case testString1
+                typeNmDatabase = Ds.Tables(0).Rows(i)(1).ToString()
+
+                Select Case typeNmDatabase
                     Case "Iryouhin"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        IryouhinTxtBx.Text = testString2
+                        IryouhinTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Jukyoyoka"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        JukyoyokaTxtBx.Text = testString2
+                        JukyoyokaTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Shokuhin"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        ShokuhinTxtBx.Text = testString2
+                        ShokuhinTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Hibuppan"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        HibuppanTxtBx.Text = testString2
+                        HibuppanTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Kuruma"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        KurumaJikanTxtBx.Text = testString2
+                        KurumaJikanTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Dousin"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        DoushinenTxtBx.Text = testString2
+                        DoushinenTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Region1"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        Chirashi1TxtBx.Text = testString2
+                        Chirashi1TxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Region2"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        Chirashi2TxtBx.Text = testString2
+                        Chirashi2TxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Region3"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        Chirashi3TxtBx.Text = testString2
+                        Chirashi3TxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "Jissei"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        JisseiMapTxtBx.Text = testString2
+                        JisseiMapTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case "ResultShare"
-                        testString2 = Ds.Tables(0).Rows(i)(2).ToString()
-                        ResultShareTxtBx.Text = testString2
+                        ResultShareTxtBx.Text = Ds.Tables(0).Rows(i)(2).ToString()
                     Case Else
                         'Nothing
                 End Select
@@ -691,6 +734,86 @@ Public Class Form1
         FilledTxtBox(IryouUriTxtBx)
     End Sub
 
+    Private Sub IryouUriTxtBx_Leave(sender As Object, e As EventArgs) Handles IryouUriTxtBx.Leave
+        Dim blockCode As String = "1_衣料品"
+        Dim parameterCode As String = "L"
+        If flag Then
+            UriageDB(blockCode, parameterCode, IryouUriTxtBx)
+            flag = False
+        Else
+            flag = True
+        End If
+
+    End Sub
+
+    Sub UriageDB(ByVal blockCode As String, ByVal parameterCode As String, ByVal getControl As Control)
+        Conn.Close()
+
+        Dim getNendo As Integer = Val(NenDoTxtBx.Text) - 1
+        Dim getUri As Single = Val(getControl.Text)
+        Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AM年間売上] WHERE 
+            [店舗名称] = @TempoMei AND 
+            [ブロックコード] = '" & blockCode & "' AND 
+            [年度] = @NenDo AND
+            [売上] = @Uriage ", Conn)
+        cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+        cmd.Parameters.AddWithValue("@NenDo", getNendo)
+        cmd.Parameters.AddWithValue("@Uriage", getControl.Text)
+        If Conn.State = ConnectionState.Closed Then
+            Conn.Open()
+        End If
+
+        Dim reader As SqlDataReader = cmd.ExecuteReader()
+        If reader.HasRows Then
+
+            '[店舗名称]と[FilePath]はDBに合わせる場合
+            MsgBox("Already exist!")
+        Else
+            Conn.Close()
+            cmd = New SqlCommand("SELECT * FROM [dbo].[T_AM年間売上] WHERE 
+            [店舗名称] = @TempoMei AND 
+            [ブロックコード] = '" & blockCode & "'", Conn)
+
+            If Conn.State = ConnectionState.Closed Then
+                Conn.Open()
+            End If
+
+            cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+            reader = cmd.ExecuteReader()
+            If reader.HasRows Then
+                Conn.Close()
+
+                '[店舗名称]しかDBに合わさない場合
+                cmd = New SqlCommand("UPDATE [dbo].[T_AM年間売上]
+                SET [年度] = '" & getNendo & "' AND
+                [売上] = '" & getControl.Text & "'
+                WHERE [店舗名称] = '" & TempoMeiTxtBx.Text & "' AND [ブロックコード] = '" & blockCode & "'", Conn)
+
+                If Conn.State = ConnectionState.Closed Then
+                    Conn.Open()
+                End If
+
+                cmd.ExecuteNonQuery()
+            Else
+                Conn.Close()
+
+                '[店舗名称]と[FilePath]はDBに合わさない場合
+                cmd = New SqlCommand("INSERT INTO [dbo].[T_AM年間売上]
+                      ([店舗名称]
+                      ,[パターンコード]
+                      ,[ブロックコード]
+                      ,[年度]
+                      ,[売上])
+                       VALUES('" & TempoMeiTxtBx.Text & "','" & parameterCode & "','" & blockCode & "'," & getNendo & "," & getControl.Text & ")", Conn)
+                If Conn.State = ConnectionState.Closed Then
+                    Conn.Open()
+                End If
+
+                cmd.ExecuteNonQuery()
+            End If
+        End If
+    End Sub
+
     Private Sub JukyoUriTxtBx_TextChanged(sender As Object, e As EventArgs) Handles JukyoUriTxtBx.TextChanged
         JukyoUriTxtBx.TextAlign = HorizontalAlignment.Center
         FilledTxtBox(JukyoUriTxtBx)
@@ -708,32 +831,17 @@ Public Class Form1
 
     'Validation for 全角・半角 ( StrConv() function can only used in Japan )
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile] WHERE [店舗名称] = @TempoMei AND [種別] = 'Iryouhin'", Conn)
-        cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
-
-        Dim reader As SqlDataReader = cmd.ExecuteReader()
-        If reader.HasRows Then
-            MsgBox("Already exist!")
-        Else
-            MsgBox("Not exist!")
-        End If
-
+        'Dim cmd As SqlCommand = New SqlCommand("SELECT * FROM [dbo].[T_AMTourokuFile] WHERE [店舗名称] = @TempoMei AND [種別] = 'Iryouhin'", Conn)
+        'cmd.Parameters.AddWithValue("@TempoMei", TempoMeiTxtBx.Text)
+        '
+        'Dim reader As SqlDataReader = cmd.ExecuteReader()
+        'If reader.HasRows Then
+        '    MsgBox("Already exist!")
+        'Else
+        '    MsgBox("Not exist!")
+        'End If
+        ResultShare("Aeon", "D:\DBS\PT. ARI\CSAR\CSAR New Jobs\test files\Save")
     End Sub
 
-    Sub uploadToDB(ByRef dataType As String, ByVal pathName As String)
-        'Conn.Close()
-        Dim cmd As SqlCommand = New SqlCommand("INSERT INTO [dbo].[T_AMTourokuFile]
-           ([店舗名称]
-           ,[種別]
-           ,[FilePath])
-            VALUES
-           ('" + TempoMeiTxtBx.Text + "','" + dataType + "','" + pathName + "')", Conn)
 
-        If Conn.State = ConnectionState.Closed Then
-            Conn.Open()
-        End If
-
-        cmd.ExecuteNonQuery()
-        Conn.Close()
-    End Sub
 End Class
